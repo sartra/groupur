@@ -1,17 +1,18 @@
 const mongoose = require('mongoose');
-const { User } = require('./userModel');
+const  User  = require('./userModel');
 
 // post that will contain username and password to create a new user or login 
 const userController = {
     
     signup: function (req, res, next) {
+        console.log(req.body)
         req.on('error', (err) => { console.log(err) });
 
         if (!req.body.username || !req.body.password) {
             res.status(403).send('Invalid Input');
         }
 
-        let newUserRequest = {
+        let newUser = {
             username: req.body.username,
             password: req.body.password
         }

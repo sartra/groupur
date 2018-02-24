@@ -57,7 +57,7 @@
 }
 
 #headerList li {
-  display: inline;
+  display: inline-block;
 }
 
 .main {
@@ -65,8 +65,8 @@
 }
 .userMain {
   float: left;
-  flex: 1;
-  width: 50%;
+  flex: 1.4;
+  /* width: 50%; */
   margin-top: 5%;
   padding-bottom: 33%;
   border-style: solid;
@@ -77,7 +77,7 @@
 .groupsMain {
   float: right;
   flex: 1;
-  width: 50%;
+  /* width: 50%; */
   margin-top: 5%;
   padding-bottom: 33%;
   border-style: solid;

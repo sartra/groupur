@@ -10,17 +10,23 @@ const UserMain = (props) => {
       <div className='header'>
         <ul className='list' id='headerList'>
           <li><h3>Groupur</h3></li>
-          <li><a className='icon' href='/profile'><img src='icons/profile.png'/></a></li>
-          <li><a className='icon' href='/'><img src='icons/logout.png'/></a></li>
+          <li><a className='icon' href='/profile'><img src='client/icons/profile.png'/></a></li>
+          <li><a className='icon' href='/'><img src='client/icons/logout.png'/></a></li>
         </ul>
       </div>
-      
+
       <div className='main'>
         <div className='userMain'>
           <h3> Your Groups </h3>
           <div className='frame'>
             <ul id='userGroupList'>
-              <li><button href='#'>'this.props.myGroups'</button></li>
+              <li>
+                <img className='productPic' src='client/icons/profile.png'/>   
+                <button className='ugb' href='#'>'this.props.myGroups'</button>
+                <button className='ugb' href='#'>Add item</button>
+                <button className='ugb' href='#'>delete item</button>
+                <button className='ugb' href='#'>Leave group</button> 
+              </li>
             </ul>
           </div>
           <div>

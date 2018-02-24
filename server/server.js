@@ -45,3 +45,5 @@ app.post('/remove-group-order', groupController.removeOrder);
 
 // ???
 app.get('/myAccount')
+
+module.exports = app;
