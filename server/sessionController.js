@@ -5,9 +5,9 @@ const sessionController = {};
 sessionController.verifySession = (req, res) => {
   Session.findOne({cookieId: req.cookies.ssid}, (err, result) => {
     if(err || !result){
-      return res.redirect('/signup');
+      return res.send(false);
     }
-  //res.render(main page)
+  res.send(true);
   });
 };
 
