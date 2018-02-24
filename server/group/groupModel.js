@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
+
 const groupSchema = new Schema({
     group_id: { type: Number, required: true, unique: true },
     product_name: { type: String, required: true, unique: true },
