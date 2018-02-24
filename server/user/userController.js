@@ -15,6 +15,7 @@ const userController = {
             username: req.body.username,
             password: req.body.password
         }
+        
         let createdUser = User.findOrCreate(newUser);
 
         if (createdUser) {
@@ -38,7 +39,7 @@ const userController = {
         }
 
         //in the UserModel we need to verify whether the password matches the one encrypted in our data base
-        let loggedInUser= User.verifyUser(loginUserRequest);
+        let loggedInUser = User.verifyUser(loginUserRequest);
 
         if (loggedInUser) {
             res.locals.user = loggedInUser;
@@ -48,6 +49,18 @@ const userController = {
         if (!loggedInUser) {
             res.status(500).send('User not found. Please try again');
         }
+    },
+
+    addGroup: function (req, res) {
+      User.findOneAndUpdate({username: req.body.username}, { $push: { groups: req.body }}, {new: true}, (err, group) => {
+        if (err) return res.sendStatus(400);
+      })
+    },
+
+    removeGroup: function (req, res) {
+      User.findOneAndUpdate({username: req.body.username}, { $pull: { groups: req.body._id }}, {new: true}, (err, group) => {
+        if (err) return res.sendStatus(400);
+      })
     }
 
 }
