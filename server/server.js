@@ -3,6 +3,7 @@ const path = require('path');
 const app = express();
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
+const cookieParser = require('cookie-parser')
 const userController = require('./user/userController');
 const groupController = require('./group/groupController');
 const cookieController = require('./cookieController');
