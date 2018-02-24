@@ -1,10 +1,10 @@
 
 const path = require('path');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
+// const HtmlWebpackPlugin = require('html-webpack-plugin');
 const webpack = require('webpack');
 
 module.exports = {
-    entry: './client/App.jsx',
+    entry: './client/index.jsx',
     devtool: 'inline-source-map',
     devServer: {
         contentBase: './dist/',
@@ -24,16 +24,14 @@ module.exports = {
                 query: {
                     presets: ['es2015', 'react']
                 }
+            },
+            {
+                test: /\.css$/,
+                loader: [
+                    "style-loader", // creates style nodes from JS strings
+                    "css-loader", // translates CSS into CommonJS
+                ]
             }
-            // },
-            // {
-            //     test: /\.scss$/,
-            //     loader: [
-            //         "style-loader", // creates style nodes from JS strings
-            //         "css-loader", // translates CSS into CommonJS
-            //         "sass-loader" // compiles Sass to CSS
-            //     ]
-            // }
         ]
     }
 };

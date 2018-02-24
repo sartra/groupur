@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { render } from 'react-dom';
 import Login from './Login';
+import UserMain from './UserMain';
 
 
 // Stateful class component
@@ -27,8 +28,8 @@ class App extends Component {
         }
     })
     .then((res) => {
+      console.log(res.status)
       if (res.status !== 200) {
-        console.log(res)
         return 
       }
       return res.json() // sessionController.verifyUser defines data's structure in its res.send(true)
@@ -68,16 +69,16 @@ class App extends Component {
     });
   }
 
-  addGroupToUser(e) {
-    fetch('userroute', {   // have to define the route
-      method: 'POST',
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({username: user, password: password})
-    });
-  }
+  // addGroupToUser(e) {
+  //   fetch('userroute', {   // have to define the route
+  //     method: 'POST',
+  //     headers: {
+  //       Accept: 'application/json',
+  //       'Content-Type': 'application/json'
+  //     },
+  //     body: JSON.stringify({username: user, password: password})
+  //   });
+  // }
 
   render() {
    
