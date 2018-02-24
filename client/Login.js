@@ -3,7 +3,7 @@ import { render } from 'react-dom';
 
 // Presentation component function
 const Login = (props) => {
-  
+
   return (
     <div id='sign'>
       <h2>Groupur</h2>
@@ -14,12 +14,12 @@ const Login = (props) => {
       </ul>
       <ul id='signButtons'>
         <li>
-          <button className='signBox' id='signI' type='submit'>
+          <button className='signBox' id='signI' type='submit' onClick={props.handleClickI}>
             Sign in
           </button>
         </li>
         <li>
-          <button className='signBox' id='signU' type='submit'>
+          <button className='signBox' id='signU' type='submit' onClick={props.handleClickU}>
             Sign up
           </button>
         </li>
