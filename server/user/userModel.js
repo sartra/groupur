@@ -2,18 +2,21 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const userSchema = new Schema ({
-    id: {type: Number, required: true, unique: true},
     username: {type: String, required: true, unique: true},
     password: { type: String, required: true},
     firstName: {type: String, required: true, default: null},
     lastName: {type: String, required: true, default: null},
-    groups: {type: Object, required: false, default:{}}
+    groups: [{group_id: Number, group_name: String, amount: Number}]
 });
 
-//Encrypt the password with bcrypt before saving
-userSchema.pre('save', function(next) {
+const SALT_WORK_FACTOR = 10;
+const bcrypt = require('bcryptjs');
 
-    next();
+//Encrypt the password with bcrypt before saving
+userSchema.pre('save', function(next){
+  // const salt = bcrypt.genSaltSync(SALT_WORK_FACTOR);
+  this.password = bcrypt.hashSync(this.password, SALT_WORK_FACTOR);
+  next();
 });
 
 //Creates a new user if the user doesn't exist. If successful return the new entry. If the user already exists return null.
@@ -33,7 +36,13 @@ userSchema.statics.findOrCreate = function(username, password) {
 
 //returns null if unsuccessful or the found entry if successful
 userSchema.statics.verifyUser = function(password) {
-
+  this.findOne({username: username}, (err, doc) => {
+    if (err) res.status(500).send(err);
+    if (doc) {
+      if (doc.password = bcrypt.hashSync(password, SALT_WORK_FACTOR)) return doc;
+    }
+    return null;
+  });
 }
 
 
