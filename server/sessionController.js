@@ -9,7 +9,9 @@ sessionController.verifySession = (req, res) => {
         status: false
       });
     }
-  //res.render(main page)
+    res.send({
+      status: true
+    });
   });
 };
 
@@ -18,8 +20,9 @@ sessionController.startSession = (req, res) => {
     cookieId: req.cookies.ssid
   });
   session.save(function(error, session) {
-    if(error) return res.send(true);
-    //res.render(main page)
+    if(error) return res.send({
+      name: res.locals.user
+    });
   });
 };
 

@@ -66,8 +66,8 @@ class App extends Component {
         }
     })
     .then((res) => {
+      console.log(res.status)
       if (res.status !== 200) {
-        console.log(res)
         return 
       }
       return res.json() // sessionController.verifyUser defines data's structure in its res.send(true)
@@ -112,6 +112,19 @@ class App extends Component {
     });
   }
 
+<<<<<<< HEAD
+=======
+  // addGroupToUser(e) {
+  //   fetch('userroute', {   // have to define the route
+  //     method: 'POST',
+  //     headers: {
+  //       Accept: 'application/json',
+  //       'Content-Type': 'application/json'
+  //     },
+  //     body: JSON.stringify({username: user, password: password})
+  //   });
+  // }
+>>>>>>> f6491e71de4f826b95f225c3a5ff6a0cddc9cd42
 
   render() {
       
