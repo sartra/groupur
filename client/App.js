@@ -10,16 +10,54 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {  
-      // user: null,
-      // password: null
       userMain: false,
-      activeSes: false
+      activeSes: false,
+      modification: false,
+      userData: null
     };
     this.handleClick = this.handleClick.bind(this);
+    this.addItem = this.addItem.bind(this);
+    this.deleteItem = this.deleteItem.bind(this);
+    this.leaveGroup = this.leaveGroup.bind(this);
   }
 
+
+  addItem(e) {
+    fetch('/add-group-order', {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({group_id: e.props.myGroup.group_id})  
+    })
+  }
+
+  deleteItem(e) {
+    fetch('/remove-group-order', {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({group_id: e.props.myGroup.group_id})  
+    })
+  }
+
+  leaveGroup(e) {
+    fetch('/remove-group', {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({group_id: e.props.myGroup.group_id})  
+    })
+  }
+
+
   // check wether there is cookie in the browser or not.
-  // if not, render Login; it true, render UserMain  (line 85)
+  // if not, render Login; if true, render UserMain
   componentDidMount() { 
     fetch('/verify', {
         method: 'POST',
@@ -41,6 +79,8 @@ class App extends Component {
   }
   
   
+
+
   handleClick(e) {
     const user = document.getElementById('inputU').value;
     const password = document.getElementById('inputP').value;
@@ -66,10 +106,15 @@ class App extends Component {
       body: JSON.stringify({username: user, password: password})
     })
     .then((res) => {
-      if (res) {this.setState({userMain: true})}
+      let currentState = Object.assign(this.state);   //  does not copy memory address but data
+      currentState.userMain = true;   
+      currentState.userData = res;    // this res (response) from verifyuser has all the info of the user
+      if (res) {this.setState(currentState)}
     });
   }
 
+<<<<<<< HEAD
+=======
   // addGroupToUser(e) {
   //   fetch('userroute', {   // have to define the route
   //     method: 'POST',
@@ -80,11 +125,17 @@ class App extends Component {
   //     body: JSON.stringify({username: user, password: password})
   //   });
   // }
+>>>>>>> f6491e71de4f826b95f225c3a5ff6a0cddc9cd42
 
   render() {
-   
-   return (
-    this.state.activeSes ? <UserMain /> : <Login handleClick={this.handleClick} /> 
+      
+      return (
+        this.state.activeSes ? <UserMain userData={this.state.userData}
+                                         addGroup ={this.addGroup} 
+                                         addItem={this.addItem} 
+                                         deleteItem={this.deleteItem} 
+                                         leaveGroup={this.leaveGroup}/> : 
+                                         <Login handleClick={this.handleClick} /> 
    )
   }
 }
