@@ -5,7 +5,7 @@ const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const userController = require('./user/userController');
 // const groupController = require('./group/groupController');
-// const cookieController = require('./util/cookieController');
+const sessionController = require('./util/sessionController');
 
 const mongoURI = 'mongodb://admin:ilovetesting@ds245518.mlab.com:45518/groupur';
 mongoose.connect(mongoURI);
@@ -22,13 +22,14 @@ app.listen(3000, () => { console.log('listening on port 3000') }); //listens on 
 
 // when they hit the landing page, verify whether they have an active session, 
 // if so direct to myAccount. If not, keep them on the landing page to allow for manual log in or sign up
-app.get('/', sessionController.verifySession);
+app.get('/verify', sessionController.verifySession);
 
 // if they hit the sign in button
-app.post('/signup', userController.signup, sessionController.getToken, cookieController.setCookie);
+// app.post('/signup', userController.signup, sessionController.getToken, cookieController.setCookie);
 
 // if they hit the login button
-app.post('/login', userController.verifyUser, sessionController.getToken, cookieController.setCookie)
+
+// app.post('/login', userController.verifyUser, sessionController.getToken, cookieController.setCookie)
 
 // ???
 app.get('/myAccount')

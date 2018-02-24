@@ -4,7 +4,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const webpack = require('webpack');
 
 module.exports = {
-    entry: './client/App.jsx',
+    entry: './client/index.jsx',
     devtool: 'inline-source-map',
     devServer: {
         contentBase: './dist/',
