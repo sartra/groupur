@@ -6,9 +6,8 @@ const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser')
 const userController = require('./user/userController');
 const groupController = require('./group/groupController');
-const cookieController = require('./cookieController');
-const sessionController = require('./sessionController');
-const cookieParser = require('cookie-parser');
+const cookieController = require('./util/cookieController');
+const sessionController = require('./util/sessionController');
 
 
 const mongoURI = 'mongodb://admin:ilovetesting@ds245518.mlab.com:45518/groupur';
@@ -30,7 +29,7 @@ app.listen(3000, () => { console.log('listening on port 3000') }); //listens on 
 app.post('/verify', sessionController.verifySession);
 
 // if they hit the sign in button
-app.post('/signup', userController.signup, /*sessionController.getToken,*/ cookieController.setSSIDCookie, sessionController.startSession);
+app.post('/signup', userController.signup, /* sessionController.getToken, */ cookieController.setSSIDCookie, sessionController.startSession);
 
 // if they hit the login button
 app.post('/login', userController.verify, /*sessionController.getToken,*/ cookieController.setSSIDCookie, sessionController.startSession);

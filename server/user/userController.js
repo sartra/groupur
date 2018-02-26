@@ -6,7 +6,7 @@ const userController = {
     
     signup: function (req, res, next) {
         req.on('error', (err) => { console.log(err) });
-
+      
         if (!req.body.username || !req.body.password) {
             res.status(403).send('Invalid Input');
         }
@@ -16,79 +16,39 @@ const userController = {
           password: req.body.password,
           firstName: req.body.firstName,
           lastName: req.body.lastName,
+          group: req.body.group
         }
         
-        User.find({}, (err,result) => {
-          if(err) console.log(err)
-          console.log(result)
-        });
-
-        console.log('REQ.BODY', req.body)
-        // if (User.userExists(newUser)) {
-        //   res.end()
-        // }
-        // else {
-          console.log('hey')
-          User.create(newUser, (err, doc) => {
-            if(err) console.log(err)
-            if(doc) {
-              res.locals.user = doc;
-              return next();
-            }
-
-            res.status(418).send();
-          });
-
-          // let user = new User({
-          //   username: newUser.username,
-          //   password: newUser.password
-          // });
-
-          // console.log('user:  ' + user);
-
-          // user.save(function (err, user) {
-          //   console.log('in save', user)
-          //   res.locals.user = user;
-          //   next();
-          // })
-        // }
-
-      
-
-        // if (createdUser) {
-        //     // User details are accessible for creating the cookie, etc in res.locals.user
-        //     // res.locals.user = createdUser;
-        //     next();
-        // }
-
-        // if (!createdUser) res.end() // stay on landing page
+            User.create(newUser, (err, createdUser) => {
+              if(err) console.log(err)
+              if(createdUser) {
+                res.locals.user = createdUser;
+                return next();
+              }
+              res.status(500).send('Username already in use'); //Need to handle when username already exists
+            });
     },
 
     verify: function (req, res, next) {
-        req.on('error', (err) => { console.log(err) });
-        
-     
-        let loginUserRequest = {
-            username: req.body.username,
-            password: req.body.password,
-            firstName: req.body.firstName,
-            lastName: req.body.lastName,
-        }
+      req.on('error', (err) => { console.log(err) });
         if (!req.body.username || !req.body.password) {
             res.status(403).send('Invalid Input');
         }
-
+      
+      let loginUserRequest = {
+          username: req.body.username,
+          password: req.body.password
+      }
+      
         //in the UserModel we need to verify whether the password matches the one encrypted in our data base
-        let loggedInUser = User.verifyUser(loginUserRequest);
-
-        if (loggedInUser) {
-            res.locals.user = loggedInUser;
-            next();
-        }
-
-        if (!loggedInUser) {
-            res.status(500).send('User not found. Please try again');
-        }
+      
+        User.checkPassword(loginUserRequest, (doc, valid) => {
+          if(valid) {
+            res.locals.user = doc;
+            res.send(res.locals.user);
+          }
+          res.status(500).send('User not found. Please try again');
+        })
     },
 
     addGroup: function (req, res) {

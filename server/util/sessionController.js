@@ -1,13 +1,28 @@
+const Session = require('./sessionModel');
 
+const sessionController = {};
 
-const sessionController = {
-    verifySession: function(req, res) {
-        console.log('in verifySession', req);
-        console.log('response', res);
-        req.on('error', (err) => {console.log(err)});
-        res.send({"result": true});
+sessionController.verifySession = (req, res) => {
+  Session.findOne({cookieId: req.cookies.ssid}, (err, result) => {
+    if(err || !result){
+      return res.send({
+        status: false
+      });
     }
+    res.send({
+      status: true
+    });
+  });
+};
 
+sessionController.startSession = (req, res) => {
+  let session = new Session ({
+    cookieId: req.cookies.ssid
+  });
+  session.save(function(error, session) {
+    if(error) res.send(500, error);
+    return res.send(res.locals.user);
+  });
 };
 
 module.exports = sessionController;
