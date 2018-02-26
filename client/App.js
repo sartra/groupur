@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import { render } from 'react-dom';
-import Login from './Login';
-import UserMain from './UserMain';
+import { BrowserRouter as Router, Route } from 'react-router-dom';
+import Login from './Login'
+import UserMain from './UserMain'
 
 
 // Stateful class component
@@ -9,10 +10,8 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {  
-      userMain: false,
-      activeSes: false,
-      modification: false,
-      userData: null
+      activeSess: false,
+      userData: {}
     };
     this.handleClick = this.handleClick.bind(this);
     this.addItem = this.addItem.bind(this);
@@ -73,7 +72,9 @@ class App extends Component {
       return res.json() // sessionController.verifyUser defines data's structure in its res.send(true)
     })
     .then((data) => { 
-      this.setState({activeSes: data})
+      let tempState = this.state;
+      tempState.activeSess = data;
+      this.setState(tempState);
     })
   }
   
@@ -112,29 +113,16 @@ class App extends Component {
     });
   }
 
-<<<<<<< HEAD
-=======
-  // addGroupToUser(e) {
-  //   fetch('userroute', {   // have to define the route
-  //     method: 'POST',
-  //     headers: {
-  //       Accept: 'application/json',
-  //       'Content-Type': 'application/json'
-  //     },
-  //     body: JSON.stringify({username: user, password: password})
-  //   });
-  // }
->>>>>>> f6491e71de4f826b95f225c3a5ff6a0cddc9cd42
-
   render() {
       
       return (
-        this.state.activeSes ? <UserMain userData={this.state.userData}
-                                         addGroup ={this.addGroup} 
-                                         addItem={this.addItem} 
-                                         deleteItem={this.deleteItem} 
-                                         leaveGroup={this.leaveGroup}/> : 
-                                         <Login handleClick={this.handleClick} /> 
+        // this.state.activeSes ? <UserMain userData={this.state.userData}
+        //                                  addGroup ={this.addGroup} 
+        //                                  addItem={this.addItem} 
+        //                                  deleteItem={this.deleteItem} 
+        //                                  leaveGroup={this.leaveGroup}/> : 
+        //                                  <Login handleClick={this.handleClick} /> 
+        this.state.activeSess ? <div>UserMain</div> : <div>Login</div>
    )
   }
 }
