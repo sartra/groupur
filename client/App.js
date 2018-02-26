@@ -65,15 +65,16 @@ class App extends Component {
         }
     })
     .then((res) => {
-      console.log(res.status)
+      console.log(res)
       if (res.status !== 200) {
         return 
       }
       return res.json() // sessionController.verifyUser defines data's structure in its res.send(true)
     })
     .then((data) => { 
+      console.log(data)
       let tempState = this.state;
-      tempState.activeSess = data;
+      tempState.activeSess = data.status;
       this.setState(tempState);
     })
   }
@@ -122,7 +123,7 @@ class App extends Component {
         //                                  deleteItem={this.deleteItem} 
         //                                  leaveGroup={this.leaveGroup}/> : 
         //                                  <Login handleClick={this.handleClick} /> 
-        this.state.activeSess ? <div>UserMain</div> : <div>Login</div>
+        this.state.activeSess ? <Login /> : <UserMain />
    )
   }
 }
