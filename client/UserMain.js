@@ -2,14 +2,10 @@ import React, { Component } from 'react';
 import { render } from 'react-dom';
 
 // Presentation component function
-class UserMain extends Component {
-  constructor(props){
-    super(props); 
-  }
 
 
+const UserMain = (props) => {
 
-  render() {
     return (
       <div id='userMain'>
 
@@ -28,13 +24,13 @@ class UserMain extends Component {
               <ul id='userGroupList'>
                 <li>          
 
-                {this.props.userData.groups.map( (group, index) => 
+                {/* {props.userData.groups.map( (group, index) => 
                     <UserDetail myGroup={group}
                                 addItem={this.props.addItem} 
                                 deleteItem={this.props.deleteItem}
                                 leaveGroup={this.props.leaveGroup}
                                 addGroup ={this.props.addGroup}/> 
-                  )} 
+                  )}  */}
                 </li>
               </ul>
             </div>
@@ -69,6 +65,5 @@ class UserMain extends Component {
       </div>
     );
   }  
-}
 
 module.exports = UserMain
