@@ -36,7 +36,10 @@ describe('Route integration', () => {
         .send({})
         .end(function(err, res) {
           if(err) return done(err);
+<<<<<<< HEAD
           console.log(res.body);
+=======
+>>>>>>> login
           done();
         });
     });
@@ -50,7 +53,11 @@ describe('Route integration', () => {
           password: 'weiss'
         })
         // .expect('Content-Type', /application\/json/)
+<<<<<<< HEAD
         .expect(200, done)
+=======
+        .expect(200)
+>>>>>>> login
         .end(function(err, res) {
           if(err) return done(err);
           console.log(res.body);
