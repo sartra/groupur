@@ -52,11 +52,14 @@ const userController = {
     },
 
     addGroup: function (req, res) {
-      //we need username of User
-      //we need group id, group name, and amount User is purchasing
-      User.findOneAndUpdate({username: req.body.username}, { $push: { groups: req.body }}, {new: true}, (err, group) => {
-        if (err) return res.sendStatus(400);
-      })
+
+      res.send(JSON.stringify(req.body)); 
+
+      // let newGroup = new
+      // User.findOneAndUpdate({username: req.body.username}, { $push: { groups: req.body }}, {new: true}, (err, group) => {
+      //   if (err) return res.sendStatus(400);
+      // })
+      
     },
 
     removeGroup: function (req, res) {

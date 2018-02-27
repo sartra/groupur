@@ -4,8 +4,6 @@ import { BrowserRouter as Router, Route } from 'react-router-dom';
 import Login from './Login'
 import UserMain from './UserMain'
 
-
-// Stateful class component
 class App extends Component {
   constructor(props) {
     super(props);
@@ -14,75 +12,31 @@ class App extends Component {
       userData: {}
     };
     this.handleClick = this.handleClick.bind(this);
-    this.addItem = this.addItem.bind(this);
-    this.deleteItem = this.deleteItem.bind(this);
-    this.leaveGroup = this.leaveGroup.bind(this);
+    this.addGroup = this.addGroup.bind(this);
   }
 
 
-  addItem(e) {
-    fetch('/add-group-order', {
+  addGroup(){
+    let value = document.getElementById('Group').value
+
+    fetch('/add-group', {
       method: 'POST',
       headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json'
+        'Content-Type' : 'application/json'
       },
-      body: JSON.stringify({group_id: e.props.myGroup.group_id})  
+      body: JSON.stringify({value: value})
     })
-  }
-
-  deleteItem(e) {
-    fetch('/remove-group-order', {
-      method: 'POST',
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({group_id: e.props.myGroup.group_id})  
+    .then(e => {
+      return e.json()
     })
-  }
-
-  leaveGroup(e) {
-    fetch('/remove-group', {
-      method: 'POST',
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({group_id: e.props.myGroup.group_id})  
-    })
-  }
-
-
-  // check wether there is cookie in the browser or not.
-  // if not, render Login; if true, render UserMain
-  componentDidMount() { 
-    fetch('/verify', {
-        method: 'POST',
-        headers: {
-          Accept: 'application/json',
-          'Content-Type': 'application/json'
-        }
-    })
-    .then((res) => {
-      console.log(res)
-      if (res.status !== 200) {
-        return 
-      }
-      return res.json() // sessionController.verifyUser defines data's structure in its res.send(true)
-    })
-    .then((data) => { 
+    .then(data => {
       console.log(data)
-      let tempState = this.state;
-      tempState.activeSess = data.status;
-      this.setState(tempState);
     })
+    .catch(e => 
+      console.log(e))
   }
-  
-  
 
-
-  handleClick(e) {
+   handleClick(e) {
     const user = document.getElementById('inputU').value;
     const password = document.getElementById('inputP').value;
     
@@ -95,9 +49,7 @@ class App extends Component {
 
     const buttonId = e.target.id;
     const route = (e.target.id === 'signI' ? '/login' : '/signup');
-    console.log(route)
 
-    
     fetch(route, {
       method: 'POST',
       headers: {
@@ -114,17 +66,33 @@ class App extends Component {
     });
   }
 
+  // check wether there is cookie in the browser or not.
+  // if not, render Login; if true, render UserMain
+  componentDidMount() { 
+    fetch('/verify', {
+        method: 'POST',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json'
+        }
+    })
+    .then((res) => {
+      if (res.status !== 200) {
+        return 
+      }
+      return res.json() // sessionController.verifyUser defines data's structure in its res.send(true)
+    })
+    .then((data) => { 
+      let tempState = this.state;
+      tempState.activeSess = data.status;
+      this.setState(tempState);
+    })
+  }
+
   render() {
-      
       return (
-        // this.state.activeSes ? <UserMain userData={this.state.userData}
-        //                                  addGroup ={this.addGroup} 
-        //                                  addItem={this.addItem} 
-        //                                  deleteItem={this.deleteItem} 
-        //                                  leaveGroup={this.leaveGroup}/> : 
-        //                                  <Login handleClick={this.handleClick} /> 
-        this.state.activeSess ? <Login /> : <UserMain />
-   )
+        <UserMain addGroup={this.addGroup} />
+      )
   }
 }
 
