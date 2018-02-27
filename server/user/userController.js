@@ -69,7 +69,7 @@ const userController = {
     },
 
     addGroup: function (req, res) {
-
+      console.log(req.body)
       res.send(JSON.stringify(req.body)); 
 
       // let newGroup = new

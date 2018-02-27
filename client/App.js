@@ -31,6 +31,7 @@ class App extends Component {
     })
     .then(data => {
       console.log(data)
+    })
   }
 
 
@@ -99,6 +100,7 @@ class App extends Component {
       /*if (res)*/ this.setState(currentState);
     });
   }
+
 
   // check wether there is cookie in the browser or not.
   // if not, render Login; if true, render UserMain
