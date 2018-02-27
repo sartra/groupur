@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { render } from 'react-dom';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
 import Login from './Login'
-import UserMain from './UserMain'
+import MainPage from './MainPage'
 
 
 // Stateful class component
@@ -10,7 +10,7 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {  
-      activeSess: false,
+      activeSession: false,
       userData: {}
     };
     this.handleClick = this.handleClick.bind(this);
@@ -65,16 +65,16 @@ class App extends Component {
         }
     })
     .then((res) => {
-      console.log(res)
+      // console.log(res)
       if (res.status !== 200) {
         return 
       }
       return res.json() // sessionController.verifyUser defines data's structure in its res.send(true)
     })
     .then((data) => { 
-      console.log(data)
+      // console.log(data)
       let tempState = this.state;
-      tempState.activeSess = data.status;
+      tempState.activeSession = data.status;
       this.setState(tempState);
     })
   }
@@ -82,19 +82,19 @@ class App extends Component {
   
 
 
-  handleClick(e) {
-    const user = document.getElementById('inputU').value;
-    const password = document.getElementById('inputP').value;
+  handleClick(event) {    
+    const username = document.getElementById('user-input').value;
+    const password = document.getElementById('password-input').value;
+    console.log('username: ' + username + '...... password: ' + password)
     
-    if (!user || !password) {
-      return false
+    if (!username || !password) {
+      return false;
     }
 
-    document.getElementById('inputU').value = null;
-    document.getElementById('inputP').value = null;
+    document.getElementById('user-input').value = null;
+    document.getElementById('password-input').value = null;
 
-    const buttonId = e.target.id;
-    const route = (e.target.id === 'signI' ? '/login' : '/signup');
+    const route = (event.target.id === 'log-in' ? '/login' : '/signup');
     console.log(route)
 
     
@@ -104,27 +104,33 @@ class App extends Component {
         Accept: 'application/json',
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify({username: user, password: password})
+      body: JSON.stringify({username: username, password: password})
     })
     .then((res) => {
-      let currentState = Object.assign(this.state);   //  does not copy memory address but data
-      currentState.userMain = true;   
-      currentState.userData = res;    // this res (response) from verifyuser has all the info of the user
-      if (res) {this.setState(currentState)}
+      if (res.status < 300 && res.status >= 200) return res.json();
+    })
+    .then((res) => {
+      console.log(res)
+      if (res.message) return console.log(res.message);
+      let currentState = Object.assign(this.state); 
+      //  does not copy memory address but data
+      // currentState.userData = res;    // this res (response) from verifyuser has all the info of the user
+      if (res.activeSession) currentState.activeSession = true;
+      /*if (res)*/ this.setState(currentState);
     });
   }
 
   render() {
       
-      return (
-        // this.state.activeSes ? <UserMain userData={this.state.userData}
-        //                                  addGroup ={this.addGroup} 
-        //                                  addItem={this.addItem} 
-        //                                  deleteItem={this.deleteItem} 
-        //                                  leaveGroup={this.leaveGroup}/> : 
-        //                                  <Login handleClick={this.handleClick} /> 
-        this.state.activeSess ? <Login /> : <UserMain />
-   )
+    return (
+      // this.state.activeSes ? <UserMain userData={this.state.userData}
+      //                                  addGroup ={this.addGroup} 
+      //                                  addItem={this.addItem} 
+      //                                  deleteItem={this.deleteItem} 
+      //                                  leaveGroup={this.leaveGroup}/> : 
+      //                                  <Login handleClick={this.handleClick} /> 
+      this.state.activeSession ? <MainPage /> : <Login handleClick={this.handleClick}/>
+    );
   }
 }
 

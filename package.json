@@ -7,7 +7,11 @@
     "test": "mocha --timeout 8000 test/",
     "start": "node server/server.js",
     "webpack": "./node_modules/.bin/webpack -w",
+<<<<<<< HEAD
     "webpackdev": "./node_modules/.bin/webpack-dev-server"
+=======
+    "wpds": "./node_modules/.bin/webpack-dev-server"
+>>>>>>> login
   },
   "repository": {
     "type": "git",
