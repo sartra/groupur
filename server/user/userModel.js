@@ -3,16 +3,16 @@ const Schema = mongoose.Schema;
 
 console.log('HITTING THE USERMODEL ON POST')
 const userSchema = new Schema ({
-    username: {type: String, unique: true, required: true},
-    password: { type: String, required: true},
+    username: {type: String, unique: false, required: false},
+    password: { type: String, required: false},
     firstName: {type: String, required: false},
     lastName: {type: String, required: false},
     // groups: {type: Array, required:false}
     // groups: [{group_id: Number, group_name: String, amount: Number}]
     // firstName: {type: String, required: false},
     // lastName: {type: String, required: false},
-    // groups: {type: Array, required:false}
-    groups: [{group_id: Number, group_name: String, amount: Number}]
+    groups: {type: Array, required:false}
+    // groups: [{group_id: Number, group_name: String, amount: Number}]
 });
 
 const SALT_WORK_FACTOR = 10;

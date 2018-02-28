@@ -8,15 +8,18 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {  
-      activeSession: false,
+      groupArray: [], 
+      activeSession: true,
       userData: {}
+
     };
     this.handleClick = this.handleClick.bind(this);
     this.addGroup = this.addGroup.bind(this);
   }
 
 
-  addGroup(){
+  addGroup(e){
+    e.preventDefault();
     let value = document.getElementById('Group').value
 
     fetch('/add-group', {
@@ -24,13 +27,14 @@ class App extends Component {
       headers: {
         'Content-Type' : 'application/json'
       },
-      body: JSON.stringify({value: value})
+      body: JSON.stringify({value})
     })
     .then(e => {
       return e.json()
     })
     .then(data => {
-      console.log(data)
+      this.setState({groupArray: data})
+      console.log(this.state)
     })
   }
 
@@ -133,7 +137,7 @@ class App extends Component {
       //                                  deleteItem={this.deleteItem} 
       //                                  leaveGroup={this.leaveGroup}/> : 
       //                                  <Login handleClick={this.handleClick} /> 
-      this.state.activeSession ? <MainPage addGroup={this.addGroup} /> : <Login handleClick={this.handleClick}/>
+      this.state.activeSession ? <MainPage addGroup={this.addGroup} groupArray={this.state.groupArray}/> : <Login handleClick={this.handleClick}/>
     );
   }
 }

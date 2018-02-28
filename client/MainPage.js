@@ -6,6 +6,18 @@ import { render } from 'react-dom';
 
 const MainPage = (props) => {
 
+    let newArr = props.groupArray.map((element,index) => {
+                 return (<li key={index}> {element} </li>)
+                  })
+
+    // <ul> 
+      //            {props.groupArray.map(function(listValue, key){
+        //            return <li key={key}> {listValue} </li> 
+          //        })}
+            //    </ul> 
+
+
+
     return (
       // initial header
       <div id='userMain'>
@@ -34,10 +46,14 @@ const MainPage = (props) => {
             </div>
             
             <div>
-              <form onClick={props.addGroup}> 
+              <form onSubmit={props.addGroup}> 
                 <input id='Group' type='text' name='GroupInput' placeholder='Enter name here'/> 
                 <input type='submit'/> 
+                <div> 
+                  {newArr}
+                </div>
               </form>
+               
             </div>
           </div>
 

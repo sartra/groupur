@@ -69,14 +69,28 @@ const userController = {
     },
 
     addGroup: function (req, res) {
-      console.log(req.body)
-      res.send(JSON.stringify(req.body)); 
+      // console.log(req.body)
+      // res.send(JSON.stringify(req.body)); 
+      // console.log(req.body.value)
+      // let newGroup = {
+      //     username: 'Pie',
+      //     password: 'Banana',
+      //     groups: [req.body.value]
+      //   }
 
-      // let newGroup = new
-      // User.findOneAndUpdate({username: req.body.username}, { $push: { groups: req.body }}, {new: true}, (err, group) => {
-      //   if (err) return res.sendStatus(400);
+      User.findOneAndUpdate(
+        {'username': 'Pie2'},
+        { $addToSet: {groups: req.body.value}}, 
+        {upsert: true, new: true, runValidators: true},
+        function(err,result){
+          if(err){return err}
+            res.send(JSON.stringify(result.groups))
+        })
+
+      // User.create(newGroup, (err, createdGroup) => {
+      //   if(err) console.log(err);
+      //   res.send(); 
       // })
-      
     },
 
     removeGroup: function (req, res) {
