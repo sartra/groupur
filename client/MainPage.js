@@ -1,10 +1,22 @@
 import React, { Component } from 'react';
 import { render } from 'react-dom';
 
-// props being passed down from parent. 
-// information is being saved on the client side currently. Nothing is being passed from server. 
+// props being passed down from parent.
+// information is being saved on the client side currently. Nothing is being passed from server.
 
 const MainPage = (props) => {
+
+    let newArr = props.groupArray.map((element,index) => {
+                 return (<li key={index}> {element} </li>)
+                  })
+
+    // <ul>
+      //            {props.groupArray.map(function(listValue, key){
+        //            return <li key={key}> {listValue} </li>
+          //        })}
+            //    </ul>
+
+
 
     return (
       // initial header
@@ -22,22 +34,26 @@ const MainPage = (props) => {
             <h3> Your Groups </h3>
             <div className='frame'>
               <ul id='userGroupList'>
-                <li>          
-                { /* 
+                <li>
+                { /*
                   pass down action from app. Update the state and refresh
-                  query and list data from database. On each group, add a button that allows for deletion. 
-                  When button is pressed, delete the group from the database. Update the displayed group under your group. 
+                  query and list data from database. On each group, add a button that allows for deletion.
+                  When button is pressed, delete the group from the database. Update the displayed group under your group.
                  */
                 }
                 </li>
               </ul>
             </div>
-            
+
             <div>
-              <form onClick={props.addGroup}> 
-                <input id='Group' type='text' name='GroupInput' placeholder='Enter name here'/> 
-                <input type='submit'/> 
+              <form onSubmit={props.addGroup}>
+                <input id='Group' type='text' name='GroupInput' placeholder='Enter name here'/>
+                <input type='submit'/>
+                <div>
+                  {newArr}
+                </div>
               </form>
+
             </div>
           </div>
 
@@ -52,14 +68,14 @@ const MainPage = (props) => {
           </div>
         </div>
 
-       
+
 
       </div>
     );
-  }  
+  }
 
  // four divs. There is a main div with three nested children (your groups / groups available / footer)
- // each div has additional nesting.. -_-.  
+ // each div has additional nesting.. -_-.
 
 module.exports = MainPage
 

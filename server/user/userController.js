@@ -3,16 +3,16 @@ const User = require('./userModel');
 const bcrypt = require('bcryptjs');
 const SALT_WORK_FACTOR = 10;
 
-// post that will contain username and password to create a new user or login 
+// post that will contain username and password to create a new user or login
 const userController = {
-    
+
     signup: function (req, res, next) {
         req.on('error', (err) => { console.log(err) });
-      
+
         if (!req.body.username || !req.body.password) {
             res.status(403).send('Invalid Input');
         }
-      
+
         let newUser = {
           username: req.body.username,
           password: req.body.password,
@@ -22,9 +22,9 @@ const userController = {
         }
 
         User.findOne({username: newUser.username}, (err, doc) => {
-          if(doc) return res.send({message: 'User already exists'}); 
+          if(doc) return res.send({message: 'User already exists'});
         });
-        
+
         User.create(newUser, (err, createdUser) => {
           // if(err) console.log('errorrrrr' + err);
           if(createdUser) {
@@ -40,13 +40,13 @@ const userController = {
         if (!req.body.username || !req.body.password) {
             res.status(403).send('Invalid Input');
         }
-      
+
       let loginUserRequest = {
           username: req.body.username,
           password: req.body.password
       }
       console.log('about to find user in database')
-      
+
       User.findOne({username: loginUserRequest.username}, (err, doc) => {
         if (err || !doc) return res.end();
         if (!bcrypt.compareSync(loginUserRequest.password, doc.password)) {
@@ -58,7 +58,7 @@ const userController = {
         next();
       })
 
-      
+
         // User.checkPassword(loginUserRequest, (doc, valid) => {
         //   if(valid) {
         //     res.locals.user = doc;
@@ -69,14 +69,28 @@ const userController = {
     },
 
     addGroup: function (req, res) {
-      console.log(req.body)
-      res.send(JSON.stringify(req.body)); 
+      // console.log(req.body)
+      // res.send(JSON.stringify(req.body));
+      // console.log(req.body.value)
+      // let newGroup = {
+      //     username: 'Pie',
+      //     password: 'Banana',
+      //     groups: [req.body.value]
+      //   }
 
-      // let newGroup = new
-      // User.findOneAndUpdate({username: req.body.username}, { $push: { groups: req.body }}, {new: true}, (err, group) => {
-      //   if (err) return res.sendStatus(400);
+      User.findOneAndUpdate(
+        {'username': 'Pie2'},
+        { $addToSet: {groups: req.body.value}},
+        {upsert: true, new: true, runValidators: true},
+        function(err,result){
+          if(err){return err}
+            res.send(JSON.stringify(result.groups))
+        })
+
+      // User.create(newGroup, (err, createdGroup) => {
+      //   if(err) console.log(err);
+      //   res.send();
       // })
-      
     },
 
     removeGroup: function (req, res) {

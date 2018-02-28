@@ -7,16 +7,19 @@ import MainPage from './MainPage'
 class App extends Component {
   constructor(props) {
     super(props);
-    this.state = {  
-      activeSession: false,
+    this.state = {
+      groupArray: [],
+      activeSession: true,
       userData: {}
+
     };
     this.handleClick = this.handleClick.bind(this);
     this.addGroup = this.addGroup.bind(this);
   }
 
 
-  addGroup(){
+  addGroup(e){
+    e.preventDefault();
     let value = document.getElementById('Group').value
 
     fetch('/add-group', {
@@ -24,20 +27,21 @@ class App extends Component {
       headers: {
         'Content-Type' : 'application/json'
       },
-      body: JSON.stringify({value: value})
+      body: JSON.stringify({value})
     })
     .then(e => {
       return e.json()
     })
     .then(data => {
-      console.log(data)
+      this.setState({groupArray: data})
+      console.log(this.state)
     })
   }
 
 
   // check wether there is cookie in the browser or not.
   // if not, render Login; if true, render UserMain
-  componentDidMount() { 
+  componentDidMount() {
     fetch('/verify', {
         method: 'POST',
         headers: {
@@ -48,26 +52,26 @@ class App extends Component {
     .then((res) => {
       // console.log(res)
       if (res.status !== 200) {
-        return 
+        return
       }
       return res.json() // sessionController.verifyUser defines data's structure in its res.send(true)
     })
-    .then((data) => { 
+    .then((data) => {
       // console.log(data)
       let tempState = this.state;
       tempState.activeSession = data.status;
       this.setState(tempState);
     })
-    .catch(e => 
+    .catch(e =>
       console.log(e))
   }
 
 
-  handleClick(event) {    
+  handleClick(event) {
     const username = document.getElementById('user-input').value;
     const password = document.getElementById('password-input').value;
     console.log('username: ' + username + '...... password: ' + password)
-    
+
     if (!username || !password) {
       return false;
     }
@@ -93,7 +97,7 @@ class App extends Component {
     .then((res) => {
       console.log(res)
       if (res.message) return console.log(res.message);
-      let currentState = Object.assign(this.state); 
+      let currentState = Object.assign(this.state);
       //  does not copy memory address but data
       // currentState.userData = res;    // this res (response) from verifyuser has all the info of the user
       if (res.activeSession) currentState.activeSession = true;
@@ -104,7 +108,7 @@ class App extends Component {
 
   // check wether there is cookie in the browser or not.
   // if not, render Login; if true, render UserMain
-  componentDidMount() { 
+  componentDidMount() {
     fetch('/verify', {
         method: 'POST',
         headers: {
@@ -114,26 +118,26 @@ class App extends Component {
     })
     .then((res) => {
       if (res.status !== 200) {
-        return 
+        return
       }
       return res.json() // sessionController.verifyUser defines data's structure in its res.send(true)
     })
-    .then((data) => { 
+    .then((data) => {
       let tempState = this.state;
       tempState.activeSess = data.status;
       this.setState(tempState);
     })
   }
 
-  render() {      
+  render() {
     return (
       // this.state.activeSes ? <UserMain userData={this.state.userData}
-      //                                  addGroup ={this.addGroup} 
-      //                                  addItem={this.addItem} 
-      //                                  deleteItem={this.deleteItem} 
-      //                                  leaveGroup={this.leaveGroup}/> : 
-      //                                  <Login handleClick={this.handleClick} /> 
-      this.state.activeSession ? <MainPage addGroup={this.addGroup} /> : <Login handleClick={this.handleClick}/>
+      //                                  addGroup ={this.addGroup}
+      //                                  addItem={this.addItem}
+      //                                  deleteItem={this.deleteItem}
+      //                                  leaveGroup={this.leaveGroup}/> :
+      //                                  <Login handleClick={this.handleClick} />
+      this.state.activeSession ? <MainPage addGroup={this.addGroup} groupArray={this.state.groupArray}/> : <Login handleClick={this.handleClick}/>
     );
   }
 }
