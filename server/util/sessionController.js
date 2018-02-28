@@ -15,13 +15,16 @@ sessionController.verifySession = (req, res) => {
   });
 };
 
-sessionController.startSession = (req, res) => {
-  let session = new Session ({
-    cookieId: req.cookies.ssid
-  });
-  session.save(function(error, session) {
-    if(error) res.send(500, error);
-    return res.send(res.locals.user);
+sessionController.startSession = (req, res, next) => {
+  Session.create({cookieId: res.locals.user._id}, (err, createdSession) => {
+    if(err) console.log(err);
+    if(createdSession) {
+      console.log('session created successfully')
+      // console.log('hi', res['set-cookie']);
+      console.log('\n\nRES', res);
+      return res.send({activeSession: true});
+    }
+    else res.status(500).send('Username already in use'); //Need to handle when username already exists
   });
 };
 
